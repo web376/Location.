@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background-color: royalblue;
+      color: white;
+      font-size: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      margin: 0;
+    }
+    .welcome {
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+    .welcome:nth-child(1) { animation-delay: 0s; }
+    .welcome:nth-child(2) { animation-delay: 1s; }
+    .welcome:nth-child(3) { animation-delay: 2s; }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome">WELCOME</div>
+  <div class="welcome">....</div>
+  <div class="welcome">.....</div>
+
+  <script>
+    setTimeout(secondPage, 4000);
+
+    function secondPage() {
+      document.body.innerHTML = `
+        <style>
+          body {
+            background-color: #ffc0cb;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+          }
+          .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: red;
+            transform: rotate(45deg);
+            animation: float 4s linear infinite;
+          }
+          .heart::before,
+          .heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: red;
+            border-radius: 50%;
+          }
+          .heart::before {
+            top: -10px;
+            left: 0;
+          }
+          .heart::after {
+            left: -10px;
+            top: 0;
+          }
+          @keyframes float {
+            0% {
+              transform: translateY(100vh) rotate(45deg);
+              opacity: 1;
+            }
+            100% {
+              transform: translateY(-10vh) rotate(45deg);
+              opacity: 0;
+            }
+          }
+          .message {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+            z-index: 20;
+          }
+          .loc-btn {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background: white;
+            color: #ff1493;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 20;
+          }
+        </style>
+
+        <div class="message">hello</div>
+        <button class="loc-btn"
+onclick="getLocation()">Tap For Next</button>
+     `;
+
+      let interval = setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }, 200);
+
+      // Clear after 10s
+      setTimeout(() => {
+        document.body.innerHTML = "";
+        clearInterval(interval);
+      }, 10000);
+    }
+
+    function getLocation() {
+
+navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        console.log("Latitude:", lat,
+"Longitude:", lon);
+          }, function(error) {
+            alert("Location not allowed or failed.");
+        console.error(error);
+      });
+    }
+  </script>
+</body>
+</html>
